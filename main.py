@@ -3,5 +3,5 @@ from arkanoid.game import Arkanoid
 
 if __name__ == "__main__":
     print(f"El tamaño de pantalla es {ANCHO} x {ALTO}")
-    Arkanoid()
-    
+    juego = Arkanoid()
+    juego.jugar()
