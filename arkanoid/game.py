@@ -1,3 +1,5 @@
+import os
+
 import pygame as pg
 
 from arkanoid import ALTO, ANCHO
@@ -11,7 +13,7 @@ class Arkanoid:
         self.display = pg.display.set_mode((ANCHO, ALTO))
         pg.display.set_caption("Arkanoid BZ XI")
 
-        icon = pg.image.load("resources/images/ball1.png")
+        icon = pg.image.load(os.path.join("resources", "images", "ball1.png"))
         pg.display.set_icon(icon)
 
         self.escenas = [
