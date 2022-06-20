@@ -1,11 +1,14 @@
 import pygame as pg
 
 from arkanoid import ALTO, ANCHO
+
+
 class Arkanoid:
     def __init__(self) -> None:
         print("Arranaca el juego!!")
         pg.init()
         self.display = pg.display.set_mode((ANCHO, ALTO))
+        pg.display.set_caption("Arkanoid BZ XI")
 
     def jugar(self):
         """Este es el bucle principal"""
@@ -16,6 +19,7 @@ class Arkanoid:
                     salir = True
             self.display.fill((99, 99, 99))
             pg.display.flip()
+
 
 if __name__ == "__main__":
     game = Arkanoid()
