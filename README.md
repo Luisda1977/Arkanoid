@@ -44,7 +44,7 @@ python -m venv env
 # Linux / Mac0s
 source ./env/bin/activate
 
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 
 # En VS Code
 code .
