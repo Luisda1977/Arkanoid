@@ -2,10 +2,7 @@ import os
 
 import pygame as pg
 
-from . import ANCHO, ALTO
-
-
-from arkanoid import ALTO, ANCHO
+from . import ANCHO, ALTO, COLOR_MENSAJE
 
 
 class Escena:
@@ -19,8 +16,13 @@ class Escena:
 class Portada(Escena):
     def __init__(self, pantalla: pg.Surface):
         super().__init__(pantalla)
+
         self.logo = pg.image.load(os.path.join(
             "resources", "images", "arkanoid_name.png"))
+
+        font_file = os.path.join("resources", "fonts", "CabinSketch-Bold.ttf")
+
+        self.tipografia = pg.font.Font(font_file, 40)
 
     def bucle_principal(self):
         salir = False
@@ -30,6 +32,7 @@ class Portada(Escena):
                     salir = True
             self.pantalla.fill((99, 0, 0))
             self.pintar_logo()
+            self.pintar_texto()
             pg.display.flip()
 
     def pintar_logo(self):
@@ -37,6 +40,14 @@ class Portada(Escena):
         pos_x = (ANCHO - ancho_logo) / 2
         pos_y = ALTO / 3
         self.pantalla.blit(self.logo, (pos_x, pos_y))
+
+    def pintar_texto(self):
+        mensaje = "Pulsa espacio para empezar"
+        texto = self.tipografia.render(mensaje, True, COLOR_MENSAJE)
+        ancho_texto = texto.get_width()
+        pos_x = (ANCHO - ancho_texto) / 2
+        pos_y = 3/4 * ALTO
+        self.pantalla.blit(texto, (pos_x, pos_y))
 
 
 class Partida(Escena):
