@@ -4,7 +4,7 @@ import pygame as pg
 
 from . import ANCHO, ALTO, COLOR_FONDO_PORTADA, COLOR_FONDO_PORTADA, COLOR_MENSAJE, FPS
 
-from . entidades import Raqueta
+from . entidades import Ladrillo, Raqueta
 
 
 class Escena:
@@ -87,12 +87,27 @@ class Partida(Escena):
             self.pantalla.fill((0, 0, 66))
             self.pintar_fondo()
 
+            # pintar raqueta
+            self.jugador.update()
             self.pantalla.blit(self.jugador.image, self.jugador.rect)
+
+            # pintar muro
 
             pg.display.flip()
 
     def pintar_fondo(self):
         self.pantalla.blit(self.fondo, (0, 0))
+
+    def crear_muro(self):
+        num_filas = 5
+        num_columnas = 4
+        posicion_inicial =
+        self.ladrillos = []
+
+        for fila in range(num_filas):
+            for columna in range(num_columnas):
+                ladrillo = Ladrillo(fila, columna)
+                self.ladrillos.append(ladrillo)
 
 
 class HallOfFame(Escena):

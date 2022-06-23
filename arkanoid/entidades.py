@@ -22,7 +22,7 @@ class Raqueta(Sprite):
     margen_inferior = 20
     velocidad = 5
     fps_animacion = 12
-    limite_iteracion = FPS / fps_animacion
+    limite_iteracion = FPS // fps_animacion
     iteracion = 0
 
     def __init__(self):
@@ -69,3 +69,26 @@ class Raqueta(Sprite):
                 self.siguiente_imagen = 0
             self.image = self.sprites[self.siguiente_imagen]
             self.iteracion = 0
+
+
+"""
+1. Crear un ladrillo que hereda de Sprite
+2. Importar las imágenes
+    "Darles posición" quiere decir calcular para cada ladrillo
+    su posición con respecto al anterior para que no se solapen
+    y queden pegados pero no amontonados
+    (juntos pero no revueltos)
+
+"""
+
+
+class Ladrillo(Sprite):
+    def __init__(self, pos_x, pos_y):
+        super().__init__()
+
+        ladrillo_verde = os.path.join("resources", "images", "greenTile.png")
+        self.image = pg.image.load(ladrillo_verde)
+        ancho = self.image.get_width()
+        alto = self.image.get_width()
+
+        self.rect = self.image.get_rect(x=fila * ancho, y=columna * alto)
