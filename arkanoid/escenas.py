@@ -73,6 +73,7 @@ class Partida(Escena):
         bg_file = os.path.join("resources", "images", "background.jpg")
         self.fondo = pg.image.load(bg_file)
         self.jugador = Raqueta()
+        self.crear_muro()
 
     def bucle_principal(self):
         salir = False
@@ -92,6 +93,7 @@ class Partida(Escena):
             self.pantalla.blit(self.jugador.image, self.jugador.rect)
 
             # pintar muro
+            self.ladrillos.draw(self.pantalla)
 
             pg.display.flip()
 
@@ -101,13 +103,13 @@ class Partida(Escena):
     def crear_muro(self):
         num_filas = 5
         num_columnas = 4
-        posicion_inicial =
-        self.ladrillos = []
+        self.ladrillos = pg.sprite.Group()
+        self.ladrillos.empty()
 
         for fila in range(num_filas):
             for columna in range(num_columnas):
                 ladrillo = Ladrillo(fila, columna)
-                self.ladrillos.append(ladrillo)
+                self.ladrillos.add(ladrillo)
 
 
 class HallOfFame(Escena):

@@ -83,12 +83,13 @@ class Raqueta(Sprite):
 
 
 class Ladrillo(Sprite):
-    def __init__(self, pos_x, pos_y):
+    def __init__(self, fila, columna):
         super().__init__()
 
         ladrillo_verde = os.path.join("resources", "images", "greenTile.png")
         self.image = pg.image.load(ladrillo_verde)
-        ancho = self.image.get_width()
-        alto = self.image.get_width()
+        ancho_ladrillo = self.image.get_width()
+        alto_ladrillo = self.image.get_height()
 
-        self.rect = self.image.get_rect(x=fila * ancho, y=columna * alto)
+        self.rect = self.image.get_rect(
+            x=fila * ancho_ladrillo, y=columna * alto_ladrillo)
