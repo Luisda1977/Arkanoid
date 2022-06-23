@@ -92,4 +92,4 @@ class Ladrillo(Sprite):
         alto_ladrillo = self.image.get_height()
 
         self.rect = self.image.get_rect(
-            x=fila * ancho_ladrillo, y=columna * alto_ladrillo)
+            x=columna * ancho_ladrillo, y=fila * alto_ladrillo)

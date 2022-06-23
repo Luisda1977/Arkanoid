@@ -105,10 +105,16 @@ class Partida(Escena):
         num_columnas = 4
         self.ladrillos = pg.sprite.Group()
         self.ladrillos.empty()
+        margen_x = 40
+        margen_y = 40
 
         for fila in range(num_filas):
             for columna in range(num_columnas):
                 ladrillo = Ladrillo(fila, columna)
+                margen_x = (ANCHO - ladrillo.image.get_width()
+                            * num_columnas) / 2
+                ladrillo.rect.x += margen_x
+                ladrillo.rect.y += margen_y
                 self.ladrillos.add(ladrillo)
 
 
