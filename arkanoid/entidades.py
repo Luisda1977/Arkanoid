@@ -109,10 +109,10 @@ class Pelota(Sprite):
     def update(self, raqueta, juego_iniciado):
         if not juego_iniciado:
             self.rect = self.image.get_rect(midbottom=raqueta.rect.midtop)
-        else
-        self.rect.y += self.velocidad_x
-        if self.rect.right > ANCHO or self.rect.left < 0:
-            self.velocidad_x = -self.velocidad_x
+        else:
+            self.rect.y += self.velocidad_x
+            if self.rect.right > ANCHO or self.rect.left < 0:
+                self.velocidad_x = -self.velocidad_x
 
         self.rect.x += self.velocidad_y
         if self.rect.top <= 0:
@@ -127,3 +127,8 @@ class Pelota(Sprite):
 
     def reset(self):
         print("Recolocamos la pelota en posición inicial")
+
+    def hay_colision(self, otro):
+        if self.rect.colliderect(otro):
+            # hay colisión
+            self.velocidad_y = self.velocidad_y
