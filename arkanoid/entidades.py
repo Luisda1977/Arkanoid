@@ -20,6 +20,7 @@ Para animar las imágenes:
 class Raqueta(Sprite):
 
     margen_inferior = 20
+    velocidad = 5
 
     def __init__(self):
         super().__init__()
@@ -41,7 +42,12 @@ class Raqueta(Sprite):
 
     def update(self):
         # self.rect.x = self.rect.x + 1
-        self.image = self.sprites[self.contador]
-        self.contador += 1
-        if self.contador > 2:
-            self.contador = 0
+        #self.image = self.sprites[self.contador]
+        #self.contador += 1
+        # if self.contador > 2:
+        #self.contador = 0
+        tecla = pg.key.get_pressed()
+        if tecla[pg.K_x]:
+            self.rect.x += self.velocidad
+        if tecla[pg.K_z]:
+            self.rect.x -= self.velocidad

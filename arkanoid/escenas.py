@@ -84,8 +84,6 @@ class Partida(Escena):
                 if event.type == pg.QUIT:
                     pg.quit()
 
-            self.pantalla.fill((0, 99, 0))
-
             self.pantalla.fill((0, 0, 66))
             self.pintar_fondo()
 
