@@ -2,9 +2,9 @@ import os
 
 import pygame as pg
 
-from . import ANCHO, ALTO, COLOR_FONDO_PORTADA, COLOR_FONDO_PORTADA, COLOR_MENSAJE, FPS
+from . import ANCHO, ALTO, COLOR_FONDO_PORTADA, COLOR_FONDO_PORTADA, COLOR_MENSAJE, FPS, VIDAS
 
-from . entidades import Ladrillo, Pelota, Raqueta
+from . entidades import ContadorVidas, Ladrillo, Pelota, Raqueta
 
 
 class Escena:
@@ -75,33 +75,56 @@ class Partida(Escena):
         self.jugador = Raqueta()
         self.crear_muro()
         self.pelota = Pelota(midbottom=self.jugador.rect.midtop)
+        self.contador_de_vidas = ContadorVidas(VIDAS)
+        self.marcador = Marcador()
 
     def bucle_principal(self):
         salir = False
-        partida_iniciada = False
+        pelota_en_movimiento = False
         while not salir:
             self.reloj.tick(FPS)
-            self.jugador.update()
 
+            ### COMPROBAR EVENTOS ###
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     pg.quit()
                 if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
-                    partida_iniciada = True
+                    pelota_en_movimiento = True
 
-            self.pantalla.fill((0, 0, 66))
-            self.pintar_fondo()
-
-            # pintar raqueta
+            ## ACTUALIZAR EL ESTADO DE TODOS LOS OBJETOS ##
             self.jugador.update()
-            self.pantalla.blit(self.jugador.image, self.jugador.rect)
+            self.pelota.update(self.jugador, pelota_en_movimiento)
+            self.pelota.hay_colision(self.jugador)
+            golpeados = pg.sprite.spritecollide(
+                self.pelota, self.ladrillos, True)
 
-            # pintar muro
+            if len(golpeados) > 0:
+                self.pelota.velocidad_y *= -1
+                # con todos los ladrillos golpeados, sumar puntuación correspondiente
+                for ladrillo in golpeados:
+                    self.marcador.aumentar(ladrillo, puntos)
+
+            if len(self.ladrillos.sprites()) == 0:
+                print("El muro ha sido destruido. Construyendo de nuevo")
+                salir = True
+
+            ## COMPROBAMOS LAS VIDAS Y EL FINAL DE LA PARTIDA ##
+            if self.pelota.he_perdido:
+                salir = self.contador_de_vidas.perder_vida()
+                pelota_en_movimiento = False
+                self.pelota.he_perdido = False
+
+            ## PINTAR TODOS LOS OBJETOS Y ACTUALIZAR LA PANTALLA ##
+            self.pintar_fondo()
+            self.pantalla.blit(self.jugador.image,
+                               self.jugador.rect)  # RAQUETA
+            # MURO
             self.ladrillos.draw(self.pantalla)
-
-            # pintar pelota
-            self.pelota.update(self.jugador, False)
-            self.pantalla.blit(self.pelota.image, self.pelota.rect)
+            self.pantalla.blit(self.pelota.image, self.pelota.rect)  # PELOTA
+            # MARCADOR
+            self.marcador.pintar(self.pantalla)
+            # VIDAS
+            self_contador_de_vidas.pintar(self.pantalla)
 
             pg.display.flip()
 
@@ -109,16 +132,17 @@ class Partida(Escena):
         self.pantalla.blit(self.fondo, (0, 0))
 
     def crear_muro(self):
-        num_filas = 5
-        num_columnas = 4
+        num_filas = 1
+        num_columnas = 6
         self.ladrillos = pg.sprite.Group()
         self.ladrillos.empty()
-        margen_x = 40
+
         margen_y = 40
 
-        for fila in range(num_filas):
+        for fila in range(num_filas):  # 0, 1, 2, 3, 4
+            puntos = (num_filas - fila)*10
             for columna in range(num_columnas):
-                ladrillo = Ladrillo(fila, columna)
+                ladrillo = Ladrillo(fila, columna, puntos)
                 margen_x = (ANCHO - ladrillo.image.get_width()
                             * num_columnas) / 2
                 ladrillo.rect.x += margen_x
@@ -134,4 +158,5 @@ class HallOfFame(Escena):
                 if event.type == pg.QUIT:
                     pg.quit()
             self.pantalla.fill((0, 0, 99))
+
             pg.display.flip()
